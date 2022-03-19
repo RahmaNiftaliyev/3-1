@@ -19,26 +19,28 @@ function calculator ( callback, ...args )
 /**
  * @param { number } counter
  */
-function collector ( counter )
+function collector ( counter, callback1, callback2, ...args )
 {
     let result = [];
     for ( let i = 0; i < counter; i++ )
     {
-        result.push( calculator( randomizer, alphabet, numbers ) );
+        result.push( callback1( callback2, ...args ) );
     }
     return result;
 }
 
 /**
- * @param { function } callback
+ * @param { function } callback1
+ * @param { function } callback2
+ * @param { function } callback3
  * @param { number } counter
  */
 
-function finalize_order ( callback, counter, ...args )
+function finalize_order ( callback1, callback2, callback3, counter, ...args )
 {
     let first_output, str_arr, int_arr, str, num;
     [ num, str ] = [ ...args ]
-    first_output = callback( counter );
+    first_output = callback1( counter, callback2, callback3,str,num );
     str_arr = str.filter( item => Array.from( new Set( first_output.map( obj => obj.string ) ) ).indexOf( item ) === -1 ).reduce( ( a, b ) => a + b )
     int_arr = num.filter( item => Array.from( new Set( first_output.map( obj => obj.number ) ) ).indexOf( item ) === -1 ).reduce( ( a, b ) => a + b )
 
@@ -52,6 +54,6 @@ function finalize_order ( callback, counter, ...args )
 
 }
 
-let output = finalize_order( collector, 20, numbers, alphabet )
+let output = finalize_order( collector, calculator, randomizer, 25, numbers, alphabet )
 
-
+console.log( output )
